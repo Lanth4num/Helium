@@ -81,8 +81,16 @@ fileBtn.addEventListener("click", async (e)=>{
   
   slideList = await invoke("md_parsing", {"filePath": filePath});
 
+  slideIndex = 0;
+  setToCurrentSlide(slideList[slideIndex]);
+
+  resetKeyListeners();
+});
+
+/* take raw html string as argument and display it in the fileDiv */
+function setToCurrentSlide(strHtml){
   // init at first slide
-  let htmlDoc = new DOMParser().parseFromString(slideList[0], "text/html");
+  let htmlDoc = new DOMParser().parseFromString(strHtml, "text/html");
 
   let parsedMD = htmlDoc.querySelector("body");
   // clear area
@@ -93,10 +101,16 @@ fileBtn.addEventListener("click", async (e)=>{
 
   // reset currentSopoilerIndex & slideIndex
   currentSpoilerIndex = -1;
-  slideIndex = 0;
 
   initSpoilers();
-});
+}
+
+function resetKeyListeners(){
+  document.removeEventListener("keydown", keyDownEvent)
+  document.removeEventListener("keyup", keyReleasedEvent)
+  document.addEventListener("keydown", keyDownEvent)
+  document.addEventListener("keyup", keyReleasedEvent)
+}
 
 function initSpoilers(){
   //console.debug("#initSpoilers");
@@ -160,7 +174,8 @@ function textToSpoilerText(text){
 // -> : show next spoiler
 // <- : hide current spoiler
 var keyDate = 0;
-document.addEventListener("keydown", (e)=>{
+
+function keyDownEvent(e){
   if (keyDate != 0 ) return;
 
   if ( e.code == "ArrowRight" ) {
@@ -170,10 +185,9 @@ document.addEventListener("keydown", (e)=>{
     previousSpoiler();
     keyDate = new Date();
   }
-});
+}
 
-document.addEventListener("keyup", (e)=>{
-  
+function keyReleasedEvent(e){
   if (keyDate == 0) return;
   let timePressed = (new Date().getTime() - keyDate.getTime())
   keyDate = 0;
@@ -188,7 +202,7 @@ document.addEventListener("keyup", (e)=>{
       previousSlide();
       break;
   }
-});
+}
 
 function nextSpoiler(){
   // check if there is another spoiler
@@ -221,7 +235,11 @@ function previousSpoiler(){
 }
 
 function nextSlide(){
-
+  // check if there is a slide after the current one
+  if ( slideIndex < slideList.length-1){
+    setToCurrentSlide(slideList[++slideIndex])
+  }
+  return;
 }
 
 function previousSlide(){
