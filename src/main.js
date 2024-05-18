@@ -10,6 +10,14 @@ var span = document.getElementById("selectedFile");
 var spoilers;
 var currentSpoilerIndex = -1;
 
+// store the current document and each slides
+var slideList;
+var slideIndex;
+
+function getWindowHeight(){
+  return  window.innerHeight || document.documentElement.clientHeight;
+}
+
 class Spoiler{
 
   constructor (htmlEl, isVisible, value){
@@ -20,16 +28,15 @@ class Spoiler{
 
   isInViewport(){
     let rect = this.htmlElement.getBoundingClientRect();
-    let height = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.bottom <= 0 || rect.bottom > height){
-      return false;
-    }
+    let height = getWindowHeight();
+
+    if (rect.bottom <= 0 || rect.bottom > height){ return false; }
     return true;
   }
 
   show(){
 
-    console.debug("#Spoiler [show]: ", this);
+    //console.debug("#Spoiler [show]: ", this);
 
     // clearing the text
     this.htmlElement.innerText = "";
@@ -39,7 +46,7 @@ class Spoiler{
       if (this.value.length > 0){
         for ( let i=0; i<this.value.length; i++){
           this.htmlElement.appendChild(this.value[i]);
-          console.debug(this.value[i]);
+          //console.debug(this.value[i]);
         }
       } 
     }
@@ -51,7 +58,7 @@ class Spoiler{
   }
 
   hide(){
-    console.debug("#Spoiler [hide]: ", this);
+    //console.debug("#Spoiler [hide]: ", this);
 
     this.htmlElement.innerText = textToSpoilerText(this.htmlElement.innerText);
     
@@ -72,8 +79,10 @@ fileBtn.addEventListener("click", async (e)=>{
 
   span.innerText = filePath;
   
-  let htmlText = await invoke("md_parsing", {"filePath": filePath});
-  let htmlDoc = new DOMParser().parseFromString(htmlText, "text/html");
+  slideList = await invoke("md_parsing", {"filePath": filePath});
+
+  // init at first slide
+  let htmlDoc = new DOMParser().parseFromString(slideList[0], "text/html");
 
   let parsedMD = htmlDoc.querySelector("body");
   // clear area
@@ -82,14 +91,15 @@ fileBtn.addEventListener("click", async (e)=>{
   // update area to the compiled html
   fileDiv.appendChild(parsedMD);
 
-  // reset currentSopoilerIndex
+  // reset currentSopoilerIndex & slideIndex
   currentSpoilerIndex = -1;
+  slideIndex = 0;
 
   initSpoilers();
 });
 
 function initSpoilers(){
-  console.debug("#initSpoilers");
+  //console.debug("#initSpoilers");
   // update spoilers
   spoilers = getSpoilers();
   // hide elements
@@ -114,7 +124,7 @@ function switchSpoilerState(elem){
 
 function getSpoilers(){
 
-  console.debug("#getSpoiler");
+  //console.debug("#getSpoiler");
   let result = [];
 
   // get every spoilers elements
@@ -125,7 +135,7 @@ function getSpoilers(){
     // used in switchSpoilerState
     element.spoilerIndex = i;
     let value = Array.from(element.childNodes).length == 0 ? element.innerText : Array.from(element.childNodes); 
-    console.debug("\t", value);
+    //console.debug("\t", value);
     result.push(new Spoiler(element, false , value));
     i++;
   });
@@ -137,10 +147,10 @@ function getSpoilers(){
 function textToSpoilerText(text){
   let result = ""; 
   for (let char of text){
-    if (char != " "){
+    if (! [" ", "-", "."].includes(char)){
       result = result.concat("..");
     } else {
-      result = result.concat("  ");
+      result = result.concat(char);
     }
   }
   return result;
@@ -149,43 +159,74 @@ function textToSpoilerText(text){
 // key handling :
 // -> : show next spoiler
 // <- : hide current spoiler
-// 
+var keyDate = 0;
 document.addEventListener("keydown", (e)=>{
-
-  let windowHeight =  window.innerHeight || document.documentElement.clientHeight;
+  if (keyDate != 0 ) return;
 
   if ( e.code == "ArrowRight" ) {
-    if ( currentSpoilerIndex < spoilers.length-1 ){ 
-      if ( spoilers[currentSpoilerIndex+1].isInViewport() ){
-        currentSpoilerIndex++;
-        spoilers[currentSpoilerIndex].show();
-      } else {
-        scrollBy(0, windowHeight*0.75)
-      }
-    }
-    // Make it work even if there is no spoilers
-    else {
-        scrollBy(0, windowHeight*0.75)
-    }
-
+    nextSpoiler();
+    keyDate = new Date();
   } else if (e.code == "ArrowLeft" ) {
-
-    if ( currentSpoilerIndex > -1 ) {
-      let spoiler = spoilers[currentSpoilerIndex];
-
-      if ( spoiler.isInViewport() ){
-        spoiler.hide();
-        currentSpoilerIndex--;
-      } else {
-        scrollBy(0, -windowHeight*0.7)
-      }
-    }
-    // Make it work even if there is no spoilers
-    else {
-        scrollBy(0, -windowHeight*0.7)
-    }
+    previousSpoiler();
+    keyDate = new Date();
   }
 });
+
+document.addEventListener("keyup", (e)=>{
+  
+  if (keyDate == 0) return;
+  let timePressed = (new Date().getTime() - keyDate.getTime())
+  keyDate = 0;
+  // call next slide on long press (> 500 ms)
+  if (timePressed < 500) return;
+
+  switch( e.code ){
+    case "ArrowRight":
+      nextSlide();
+      break;
+    case "ArrowLeft":
+      previousSlide();
+      break;
+  }
+});
+
+function nextSpoiler(){
+  // check if there is another spoiler
+  if ( currentSpoilerIndex < spoilers.length-1 ){ 
+    
+    if ( spoilers[currentSpoilerIndex+1].isInViewport() ){
+      currentSpoilerIndex++;
+      spoilers[currentSpoilerIndex].show();
+      return;
+    }
+  }
+  // scroll if there is no next spoiler or if it is not in viewport
+  scrollBy(0, getWindowHeight()*0.7)
+}
+
+function previousSpoiler(){
+  // check if there is a spoiler before
+  if ( currentSpoilerIndex > -1 ) {
+
+    let spoiler = spoilers[currentSpoilerIndex];
+
+    if ( spoiler.isInViewport() ){
+      spoiler.hide();
+      currentSpoilerIndex--;
+      return;
+    }
+  }
+  // scroll if there is no next spoiler or if it is not in viewport
+  scrollBy(0, -getWindowHeight()*0.7)
+}
+
+function nextSlide(){
+
+}
+
+function previousSlide(){
+
+}
 
 document.getElementById("zoom-in").addEventListener("click", ()=>fontZoom());
 document.getElementById("zoom-out").addEventListener("click", ()=>fontUnzoom());

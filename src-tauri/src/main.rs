@@ -22,7 +22,7 @@ fn spoiler_parser(string: &str, symbol: char)-> String{
     
     for char in string.chars(){
         if char == '\n'{
-            // if the symbol was opened:
+            // if the spoiler was opened:
             if is_symbol_opened {
                 main_part.push(symbol);
             }
@@ -64,20 +64,29 @@ fn spoiler_parser(string: &str, symbol: char)-> String{
 }
 
 #[tauri::command]
-fn md_parsing(file_path: &str) -> String {
+// returns a list of html strings, each element is htmltext of one slide
+fn md_parsing(file_path: &str) -> Vec<String> {
 
+    let mut content_list = Vec::new();
     let file_content = fs::read_to_string(file_path).expect("file read");
-    let content_with_spoiler = spoiler_parser(&file_content, '@');
 
-    let converted_html = to_html_with_options(&content_with_spoiler, &Options{
-        compile: CompileOptions{
-            allow_dangerous_html: true,
-            ..CompileOptions::gfm()
-        },
-        ..Options::gfm()
-    }).expect("file reading failed");
+    let slide_list:Vec<&str> = file_content.split("\n===\n").collect();
 
-    return converted_html;
+    for slide in slide_list{
+        let content_with_spoiler = spoiler_parser(slide, '@');
+
+        let converted_html = to_html_with_options(&content_with_spoiler, &Options{
+            compile: CompileOptions{
+                allow_dangerous_html: true,
+                ..CompileOptions::gfm()
+            },
+            ..Options::gfm()
+        }).expect("file reading failed");
+
+        content_list.push(converted_html);
+    }
+
+    return content_list;
 
 }
 
