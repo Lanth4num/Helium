@@ -3,6 +3,14 @@ html{
   scroll-behavior: smooth;
 }
 
+#slideCounter{
+  color:grey;
+  font-size: 25px;
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
+
 #filePath{
   color: grey;
 }

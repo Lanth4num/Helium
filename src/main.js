@@ -4,7 +4,8 @@ const { open } = window.__TAURI__.dialog;
 
 var fileBtn = document.querySelector("button");
 var fileDiv = document.getElementById("file");
-var span = document.getElementById("selectedFile");
+var filePathSpan = document.getElementById("selectedFile");
+let slideSpan = document.getElementById("slideCounter");
 
 // store the spoilers in arrays like [html element, isVisible, Value]
 var spoilers;
@@ -77,7 +78,7 @@ fileBtn.addEventListener("click", async (e)=>{
     }]
   });
 
-  span.innerText = filePath;
+  filePathSpan.innerText = filePath;
   
   slideList = await invoke("md_parsing", {"filePath": filePath});
 
@@ -103,13 +104,14 @@ function setToCurrentSlide(strHtml){
   currentSpoilerIndex = -1;
 
   initSpoilers();
+  updateSlideCounter();
 }
 
 function resetKeyListeners(){
   document.removeEventListener("keydown", keyDownEvent)
-  document.removeEventListener("keyup", keyReleasedEvent)
+  //document.removeEventListener("keyup", keyReleasedEvent)
   document.addEventListener("keydown", keyDownEvent)
-  document.addEventListener("keyup", keyReleasedEvent)
+  //document.addEventListener("keyup", keyReleasedEvent)
 }
 
 function initSpoilers(){
@@ -173,20 +175,27 @@ function textToSpoilerText(text){
 // key handling :
 // -> : show next spoiler
 // <- : hide current spoiler
-var keyDate = 0;
+//var keyDate = 0;
 
 function keyDownEvent(e){
-  if (keyDate != 0 ) return;
+  console.log(e.code);
 
-  if ( e.code == "ArrowRight" ) {
+  //if (keyDate != 0 ) return;
+
+  if ( e.code == "ArrowRight" || e.code == "PageUp") {
     nextSpoiler();
-    keyDate = new Date();
-  } else if (e.code == "ArrowLeft" ) {
+    //keyDate = new Date();
+  } else if (e.code == "ArrowLeft" || e.code == "PageDown" ) {
     previousSpoiler();
-    keyDate = new Date();
+    //keyDate = new Date();
+  } else if (e.code == "KeyB" || e.code == "KeyP"){
+    previousSlide();
+  } else if (e.code == "F5" || e.code == "Escape"){
+    nextSlide();
   }
 }
 
+/*
 function keyReleasedEvent(e){
   if (keyDate == 0) return;
   let timePressed = (new Date().getTime() - keyDate.getTime())
@@ -203,6 +212,7 @@ function keyReleasedEvent(e){
       break;
   }
 }
+*/
 
 function nextSpoiler(){
   // check if there is another spoiler
@@ -234,15 +244,26 @@ function previousSpoiler(){
   scrollBy(0, -getWindowHeight()*0.7)
 }
 
+function updateSlideCounter(){
+  slideSpan.innerText = `${slideIndex+1}/${slideList.length}` 
+}
+
 function nextSlide(){
   // check if there is a slide after the current one
   if ( slideIndex < slideList.length-1){
     setToCurrentSlide(slideList[++slideIndex])
+    updateSlideCounter();
   }
   return;
 }
 
 function previousSlide(){
+  // check if there is a slide after the current one
+  if ( slideIndex > 0){
+    setToCurrentSlide(slideList[--slideIndex])
+    updateSlideCounter();
+  }
+  return;
 
 }
 
