@@ -71,7 +71,10 @@ fn md_parsing(file_path: &str) -> Vec<String> {
     let mut content_list = Vec::new();
     let file_content = fs::read_to_string(file_path).expect("file read");
 
-    let slide_list:Vec<&str> = file_content.split("\n===\n").collect();
+    // normalize weird windows newline char '\r\n'
+    let normalize_content = file_content.replace("\r\n", "\n");
+
+    let slide_list:Vec<&str> = normalize_content.split("\n===\n").collect();
 
     for slide in slide_list{
         let content_with_spoiler = spoiler_parser(slide, '@');
