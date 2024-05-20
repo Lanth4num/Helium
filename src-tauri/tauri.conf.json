@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Helium",
-    "version": "0.0.0"
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -19,11 +19,6 @@
       "shell": {
         "all": false,
         "open": true
-      },
-      "window":{
-        "all":true,
-        "create":true,
-        "setFullscreen": true
       }
     },
     "bundle": {
@@ -45,9 +40,9 @@
       {
         "fullscreen": true,
         "resizable": true,
-        "title": "helium",
-        "width": 800,
-        "height": 600
+        "title": "Helium",
+        "width": 1200,
+        "height": 900
       }
     ]
   }

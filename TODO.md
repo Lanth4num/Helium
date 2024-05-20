@@ -4,7 +4,10 @@
     - [x] Slide switching
     - [x] slide number
 
-- [ ] Making redirect to markdown web editor
+- [~] Making redirect to markdown web editor
+
+- [ ] popup/window system
+
 - [ ] Adding settings
     - [ ] change default markdown web editor
     - [ ] change keybindings

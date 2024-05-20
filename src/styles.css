@@ -3,6 +3,28 @@ html{
   scroll-behavior: smooth;
 }
 
+#settings-window{
+  position: fixed;
+
+  width: 500px;
+  height: 500px;
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  border-radius: 10px;
+
+  /* DEBUG */
+  /*border: 1px solid red;*/
+  background-color: beige;
+  }
+
+#settings-button{
+  position: absolute;
+  right: 3px;
+}
+
 #slideCounter{
   color:grey;
   font-size: 25px;

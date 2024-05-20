@@ -7,6 +7,14 @@ var fileDiv = document.getElementById("file");
 var filePathSpan = document.getElementById("selectedFile");
 let slideSpan = document.getElementById("slideCounter");
 
+// settings
+let settingBtn = document.getElementById("settings-button");
+let settingWindow = document.getElementById("settings-window");
+let closeSettingsButton = document.getElementById("close-settings");
+let editBtn = document.getElementById("edit-button");
+
+let default_zoom = 30;
+
 // store the spoilers in arrays like [html element, isVisible, Value]
 var spoilers;
 var currentSpoilerIndex = -1;
@@ -67,7 +75,22 @@ class Spoiler{
   }
 }
 
-fileBtn.addEventListener("click", async (e)=>{
+settingBtn.addEventListener("click", openSettings)
+closeSettingsButton.addEventListener("click", closeSettings);
+
+function closeSettings(){
+  settingWindow.style.setProperty("visibility", "hidden");
+}
+
+function openSettings(){
+  settingWindow.style.setProperty("visibility", "visible");
+}
+
+editBtn.addEventListener("click", async ()=>{
+  await invoke("open_link", {"link": "https://dillinger.io/"})
+});
+
+fileBtn.addEventListener("click", async ()=>{
 
   let filePath =  await open({
     multiple: false,
@@ -105,6 +128,7 @@ function setToCurrentSlide(strHtml){
 
   initSpoilers();
   updateSlideCounter();
+  fontZoom(25);
 }
 
 function resetKeyListeners(){
@@ -182,16 +206,16 @@ function keyDownEvent(e){
 
   //if (keyDate != 0 ) return;
 
-  if ( e.code == "ArrowRight" || e.code == "PageUp") {
-    nextSpoiler();
-    //keyDate = new Date();
-  } else if (e.code == "ArrowLeft" || e.code == "PageDown" ) {
+  if ( e.code == "ArrowLeft" || e.code == "PageUp") {
     previousSpoiler();
     //keyDate = new Date();
-  } else if (e.code == "KeyB" || e.code == "KeyP"){
-    previousSlide();
-  } else if (e.code == "F5" || e.code == "Escape"){
+  } else if (e.code == "ArrowRight" || e.code == "PageDown" ) {
+    nextSpoiler();
+    //keyDate = new Date();
+  } else if (e.code == "KeyB" || e.code == "KeyN"){
     nextSlide();
+  } else if (e.code == "F5" || e.code == "Escape" || e.code == "KeyP"){
+    previousSlide();
   }
 }
 
@@ -254,6 +278,9 @@ function nextSlide(){
     setToCurrentSlide(slideList[++slideIndex])
     updateSlideCounter();
   }
+
+  // scroll to top
+  scrollTo(0,0);
   return;
 }
 
@@ -263,6 +290,9 @@ function previousSlide(){
     setToCurrentSlide(slideList[--slideIndex])
     updateSlideCounter();
   }
+
+  // scroll to top
+  scrollTo(0,0);
   return;
 
 }
@@ -270,9 +300,9 @@ function previousSlide(){
 document.getElementById("zoom-in").addEventListener("click", ()=>fontZoom());
 document.getElementById("zoom-out").addEventListener("click", ()=>fontUnzoom());
 
-function fontZoom(){
-  let currentSize = parseInt(window.getComputedStyle(fileDiv).fontSize);
-  fileDiv.style.fontSize = `${currentSize+1}px`;
+function fontZoom(zoom=0){
+  zoom = zoom == 0 ? parseInt(window.getComputedStyle(fileDiv).fontSize) : zoom;
+  fileDiv.style.fontSize = `${zoom+1}px`;
 }
 
 function fontUnzoom(){

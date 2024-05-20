@@ -4,6 +4,7 @@
 use std::fs;
 use std::env;
 use markdown::{to_html_with_options, CompileOptions, Options};
+use tauri:: {api::shell::open, Manager, AppHandle};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -90,10 +91,14 @@ fn md_parsing(file_path: &str) -> Vec<String> {
 
 }
 
+#[tauri::command]
+fn open_link(app: AppHandle, link: &str){
+    let _ = open(&app.shell_scope(), link, None).expect("Failed to open link");
+}
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, md_parsing])
+        .invoke_handler(tauri::generate_handler![greet, md_parsing, open_link])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
