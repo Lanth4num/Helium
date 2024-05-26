@@ -38,7 +38,7 @@
     },
     "windows": [
       {
-        "fullscreen": false,
+        "fullscreen": true,
         "resizable": true,
         "title": "Helium",
         "width": 1200,
