@@ -6,10 +6,41 @@ use std::env;
 use markdown::{to_html_with_options, CompileOptions, Options};
 use tauri:: {api::shell::open, Manager, AppHandle};
 
+
+const SPOILER_ARGUMENTS: [char;2] = ['_', '/'];
+
+
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+fn is_argument(char:char) -> bool{
+    for a_char in SPOILER_ARGUMENTS{
+        if a_char == char {return true}
+    }
+    return false
+}
+
+// put <span class=''></span> arround the content with specified class
+fn into_span(content: &str,class_list:&Vec<&str>)-> String{
+    let mut span: String= "<span class='".to_string();
+
+    // opening tag
+    for class in class_list.iter(){
+        span.push_str(" ");
+        span.push_str(class);
+    }
+    span.push_str("'>");
+
+    // main part
+    span.push_str(content);
+
+    // ending tag
+    span.push_str("</span>");
+
+    return span;
 }
 
 // function to replace symbols to html class:
@@ -19,9 +50,13 @@ fn spoiler_parser(string: &str, symbol: char)-> String{
     let mut main_part = "".to_string();
     let mut next_part = "".to_string();
     let mut is_symbol_opened = false; // @asefsef -> true -> @asefsef@ -> false
-    //                                          ^                     ^
+
+    let mut span_classes: Vec<&str> = Vec::new();
+    span_classes.push("spoiler");
     
-    for char in string.chars(){
+    let mut chars = string.chars().peekable();
+
+    while let Some(char) = chars.next(){
         if char == '\n'{
             // if the spoiler was opened:
             if is_symbol_opened {
@@ -30,6 +65,7 @@ fn spoiler_parser(string: &str, symbol: char)-> String{
             // append next_part and clear
             main_part.push_str(&next_part);
             next_part.clear();
+
             // reset is_symbol_opened
             is_symbol_opened = false;
 
@@ -40,15 +76,30 @@ fn spoiler_parser(string: &str, symbol: char)-> String{
         else if char == symbol {
             if is_symbol_opened {
                 // merge both parts and the <span> to the main_part
-                main_part.push_str("<span class='spoiler'>");
-                main_part.push_str(&next_part);
-                main_part.push_str("</span>");
+                main_part.push_str(&into_span(&next_part,&span_classes));
                 next_part.clear();
 
+                // clear list for argument handling
+                span_classes.clear();
+
+                span_classes.push("spoiler");
                 is_symbol_opened = false;
             }
-            else {
+            else {  //if symbol is not opened
                 is_symbol_opened = true;
+                // check for arguments like "_"
+                loop{
+                    if let Some(&c) = chars.peek() {
+                        if !is_argument(c) {break;}
+                        if c == '_' {
+                            span_classes.push("underscore");
+                        } else if c == '/' {
+                            span_classes.push("no-space");
+                        }
+                        chars.next();
+                    }
+               }
+
             }
         } else{ // if no symbol is found, just add it to the mainPart / secondPart
             if is_symbol_opened {
@@ -59,9 +110,7 @@ fn spoiler_parser(string: &str, symbol: char)-> String{
             }
         }
     }
-
     return main_part;
-
 }
 
 #[tauri::command]

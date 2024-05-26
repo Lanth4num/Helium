@@ -7,8 +7,10 @@
 - [~] Making redirect to markdown web editor
 
 - [ ] popup/window system
+- [x] allowing for @... 
+    - [x] arguments ('_', no space, ...)
 
-- [ ] Adding settings
+- [ ] Adding settings : enable local storage
     - [ ] change default markdown web editor
     - [ ] change keybindings
     - [ ] default zoom

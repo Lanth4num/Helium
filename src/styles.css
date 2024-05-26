@@ -3,6 +3,14 @@ html{
   scroll-behavior: smooth;
 }
 
+.underscore{
+ /*  color: red; */
+}
+
+.no-space{
+ /*  text-decoration: underline; */
+}
+
 #settings-window{
   position: fixed;
 

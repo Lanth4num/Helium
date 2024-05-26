@@ -29,10 +29,10 @@ function getWindowHeight(){
 
 class Spoiler{
 
-  constructor (htmlEl, isVisible, value){
+  constructor (htmlEl, isVisible, childs){
     this.htmlElement = htmlEl;
     this.isVisible = isVisible;
-    this.value = value
+    this.value = childs;
   }
 
   isInViewport(){
@@ -66,10 +66,15 @@ class Spoiler{
     this.isVisible = true;
   }
 
-  hide(){
-    //console.debug("#Spoiler [hide]: ", this);
+  getClasses(){ return this.htmlElement.classList}
+  hasClass(class_name){ return this.getClasses().contains(class_name) }
 
-    this.htmlElement.innerText = textToSpoilerText(this.htmlElement.innerText);
+  hide(){
+    
+    let replaceSymbol = this.hasClass("underscore") ? "_" : "..";
+    let skipChars = [];
+    if (!this.hasClass("no-space")) skipChars.push(" ");
+    this.htmlElement.innerText = textToSpoilerText(this.htmlElement.innerText, replaceSymbol, skipChars);
     
     this.isVisible = false;
   }
@@ -184,11 +189,11 @@ function getSpoilers(){
 }
 
 
-function textToSpoilerText(text){
+function textToSpoilerText(text, replace, skipList){
   let result = ""; 
   for (let char of text){
-    if (! [" ", "-", "."].includes(char)){
-      result = result.concat("..");
+    if (! skipList.includes(char)){
+      result = result.concat(replace);
     } else {
       result = result.concat(char);
     }
