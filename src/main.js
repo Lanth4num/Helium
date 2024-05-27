@@ -207,14 +207,16 @@ function textToSpoilerText(text, replace, skipList){
 //var keyDate = 0;
 
 function keyDownEvent(e){
-  console.log(e.code);
+  //console.log(e.code);
 
   //if (keyDate != 0 ) return;
 
   if ( e.code == "ArrowLeft" || e.code == "PageUp") {
+    e.preventDefault(); // prevent PageUp going all the way up
     previousSpoiler();
     //keyDate = new Date();
   } else if (e.code == "ArrowRight" || e.code == "PageDown" ) {
+    e.preventDefault(); // prevent PageDown going all the way Down 
     nextSpoiler();
     //keyDate = new Date();
   } else if (e.code == "KeyB" || e.code == "KeyN"){
@@ -246,10 +248,10 @@ function keyReleasedEvent(e){
 function nextSpoiler(){
   // check if there is another spoiler
   if ( currentSpoilerIndex < spoilers.length-1 ){ 
-    
-    if ( spoilers[currentSpoilerIndex+1].isInViewport() ){
+    let spoiler = spoilers[currentSpoilerIndex+1]; 
+    if ( spoiler.isInViewport() ){
       currentSpoilerIndex++;
-      spoilers[currentSpoilerIndex].show();
+      spoiler.show();
       return;
     }
   }
