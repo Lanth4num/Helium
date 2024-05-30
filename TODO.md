@@ -6,15 +6,23 @@
 
 - [~] Making redirect to markdown web editor
 
-- [ ] popup/window system
 - [x] allowing for @... 
-    - [x] arguments ('_', no space, ...)
+    - [x] arguments ('_', no space ('/'), ...)
 
-- [ ] Adding settings : enable local storage
-    - [ ] change default markdown web editor
+- [~] popup/window system
+- [x] better keybinds handling
+- [ ] docx import (pandoc call)
+
+- [ ] Enable local storage
+- [ ] Adding settings : 
+    - [!] change default markdown web editor
     - [ ] change keybindings
     - [ ] default zoom
+    - [ ] change font-familly
+    - [ ] may change slide parsing to "\n***\n" or "\n---\n"
 
---- 
+- [ ] Ability to clean files from @ and argts (for printing,...)
 
-- [ ] better keybinds handling
+---
+
+- [ ] editor

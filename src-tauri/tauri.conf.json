@@ -18,7 +18,14 @@
       },
       "shell": {
         "all": false,
-        "open": true
+        "open": true,
+        "scope":[
+          {
+            "name" : "pandoc_docx_md",
+            "cmd"  : "pandoc",
+            "args" : true
+          }
+        ]
       }
     },
     "bundle": {
