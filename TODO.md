@@ -11,7 +11,8 @@
 
 - [~] popup/window system
 - [x] better keybinds handling
-- [ ] docx import (pandoc call)
+- [x] docx import (pandoc call)
+    - [?] Might be an error if files already exists
 
 - [ ] Enable local storage
 - [ ] Adding settings : 

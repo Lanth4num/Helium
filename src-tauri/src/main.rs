@@ -9,13 +9,6 @@ use tauri:: {api::shell::open, Manager, AppHandle};
 
 const SPOILER_ARGUMENTS: [char;2] = ['_', '/'];
 
-
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 fn is_argument(char:char) -> bool{
     for a_char in SPOILER_ARGUMENTS{
         if a_char == char {return true}
@@ -150,7 +143,7 @@ fn open_link(app: AppHandle, link: &str){
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, md_parsing, open_link])
+        .invoke_handler(tauri::generate_handler![md_parsing, open_link])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
