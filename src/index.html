@@ -11,9 +11,8 @@
 
   <body>
     <button type="button">Open File</button>
-    <button type="button" id="zoom-in"> Zoom In </button>
-    <button type="button" id="zoom-out"> Zoom out </button>
     <button type="button" id="reload"> Reload </button>
+    <button type="button" id="open-editor"> Open in editor </button>
     <button type="button" id="settings-button"> Settings </button>
     <br>
     <div id="filePath">
@@ -34,10 +33,14 @@
       <br>
       <!-- Settings -->
       <label for="font-size">Default font size :</label>
-      <input type="number" name="font-size" />
+      <input type="number" name="font-size" id="font-size" />
       <br>
       <label for="font-family">Default font family :</label>
-      <input type="" name="font-family" />
+      <select name="font-family" id="font-family">
+        <option value="default">Default</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Times">Times</option>
+      </select>
       <br>
       <br>
       <button type="button" id="confirm-settings"> Confirm Choices </button>

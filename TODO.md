@@ -17,23 +17,24 @@
     - [x] auto-open imported file
 
 - [x] reload file button
-- [ ] Adding settings : 
-    - [ ] default zoom
-    - [ ] change font-familly
+- [x] Adding settings : 
+    - [x] default zoom
+    - [x] change font-familly
     - [x] bug report
     - [!] change default markdown web editor
 
-- [!] open file in default editor
+- [ ] open file in default editor
 
 ---
 
 ### Version 0.9
 
-- [ ] Enable local storage for storage
+- [ ] Enable local storage for settings 
 - [ ] Ability to clean files from @ and argts (for printing,...)
 - [ ] multi-keybind support
 - [ ] icons for buttons
 - [ ] pandoc download link and error handling
+- [ ] extended font support
 - Settings
     - [ ] change keybindings
     - [ ] may change slide parsing to "\n***\n" or "\n---\n"

@@ -1,5 +1,5 @@
 import { initSpoilers, setCurrentSpoilerIndex } from "./spoiler.js";
-import { fontZoom, default_zoom} from "./utils.js";
+import { fontZoom, currentZoom} from "./utils.js";
 
 let slideSpan = document.getElementById("slideCounter");
 export var fileDiv = document.getElementById("file");
@@ -34,7 +34,7 @@ export function setToCurrentSlide(strHtml){
 
   initSpoilers();
   updateSlideCounter();
-  fontZoom(default_zoom);
+  fontZoom(currentZoom);
 }
 
 function updateSlideCounter(){

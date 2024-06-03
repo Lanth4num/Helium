@@ -7,7 +7,7 @@ import * as Keys from "./keys.js"
 import { fileDiv } from "./slide.js"
 import * as Slide from "./slide.js"
 
-var default_zoom = 30;
+var currentZoom = 30;
 let currentFilePath; 
 
 var filePathSpan = document.getElementById("selectedFile");
@@ -104,11 +104,11 @@ function getWindowHeight(){
 // zoom (optional argument) := setZoom(zoom)
 function fontZoom(zoom=0){
   zoom = zoom == 0 ? parseInt(window.getComputedStyle(fileDiv).fontSize)+1 : zoom;
+  currentZoom = zoom;
   fileDiv.style.fontSize = `${zoom}px`;
 }
 
 function fontUnzoom(){
-  let currentSize = parseInt(window.getComputedStyle(fileDiv).fontSize);
-  fileDiv.style.fontSize = `${currentSize-1}px`;
+  fileDiv.style.fontSize = `${--currentZoom}px`;
 }
-export { getWindowHeight, fontZoom, fontUnzoom, default_zoom, importFromDocx, openDocument, reloadFile}
+export { getWindowHeight, fontZoom, fontUnzoom, currentZoom, importFromDocx, openDocument, reloadFile, currentFilePath}

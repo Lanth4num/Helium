@@ -58,9 +58,10 @@ function handle_key_bindings(e=undefined){
 
 function onPress(e){
   // prevent pushing multiple times to array
-  if (e.repeat) return;
+  if (!e.repeat){
+    keyMap.push(e.key);
+  }
 
-  keyMap.push(e.key);
   handle_key_bindings(e);
   show_keys();
   return;

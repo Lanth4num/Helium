@@ -1,16 +1,20 @@
-const { open } = window.__TAURI__.dialog;
+const { open: openFile } = window.__TAURI__.dialog;
+const { open: openLink } = window.__TAURI__.shell;
 
-import { fontZoom, fontUnzoom, openDocument} from "./modules/utils.js";
+import { openDocument, currentFilePath} from "./modules/utils.js";
 import "./modules/settings.js";
 
-var fileBtn = document.querySelector("button");
+let fileBtn = document.querySelector("button");
+let openBtn = document.getElementById("open-editor");
 
-document.getElementById("zoom-in").addEventListener("click", ()=>fontZoom());
-document.getElementById("zoom-out").addEventListener("click", ()=>fontUnzoom());
+openBtn.addEventListener("click", async()=>{
+  console.log(currentFilePath);
+  await openLink(currentFilePath);
+});
 
 fileBtn.addEventListener("click", async ()=>{
 
-  let filePath =  await open({
+  let filePath =  await openFile({
     multiple: false,
     title: "Select Markdown File",
     filters: [{
