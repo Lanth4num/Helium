@@ -13,6 +13,7 @@
     <button type="button">Open File</button>
     <button type="button" id="zoom-in"> Zoom In </button>
     <button type="button" id="zoom-out"> Zoom out </button>
+    <button type="button" id="reload"> Reload </button>
     <button type="button" id="settings-button"> Settings </button>
     <br>
     <div id="filePath">
@@ -25,11 +26,21 @@
 
     <div id="settings-window" style="visibility: hidden;">
       <button type="button" id="edit-button"> Open Web Editor </button>
+      <button type="button" id="import"> Import From Docx </button>
+      <button type="button" id="report-bug"> Report a Bug </button>
       <br>
+      <p>Current key(s) pressed:</p>
       <kbd id="current-keys"></kbd>
       <br>
-      <button type="button" id="import"> Import from docx </button>
+      <!-- Settings -->
+      <label for="font-size">Default font size :</label>
+      <input type="number" name="font-size" />
       <br>
+      <label for="font-family">Default font family :</label>
+      <input type="" name="font-family" />
+      <br>
+      <br>
+      <button type="button" id="confirm-settings"> Confirm Choices </button>
       <button type="button" id="close-settings"> Close </button>
     </div>
  </body>

@@ -8,20 +8,50 @@ import * as Slide from "./modules/slide.js";
 import * as Keys from "./modules/keys.js";
 
 var fileBtn = document.querySelector("button");
+let reloadBtn = document.getElementById("reload");
 var filePathSpan = document.getElementById("selectedFile");
 
 // settings
+let reportBtn = document.getElementById("report-bug");
 let settingBtn = document.getElementById("settings-button");
 let settingWindow = document.getElementById("settings-window");
 let closeSettingsButton = document.getElementById("close-settings");
 let importDocument = document.getElementById("import");
 let editBtn = document.getElementById("edit-button");
 
+let currentFilePath; 
+
+reloadBtn.addEventListener("click", reloadFile)
 settingBtn.addEventListener("click", openSettings)
 closeSettingsButton.addEventListener("click", closeSettings);
 importDocument.addEventListener("click", importFromDocx);
+reportBtn.addEventListener("click", async ()=>{
+  await invoke("open_link", {"link": "https://github.com/Lanth4num/Helium/issues"})
+});
+
+
+function reloadFile(){
+  openDocument(currentFilePath);
+}
+
+async function openDocument(filePath){
+
+  if (filePath == null){
+    console.error("Null filePath");
+    return;
+  }
+  currentFilePath = filePath;
+  filePathSpan.innerText = filePath;
+  let request = await invoke("md_parsing", {"filePath": filePath});
+  Slide.setSlideList(request);
+
+  Slide.setSlideIndex(0);
+  Slide.setToCurrentSlide(Slide.slideList[Slide.slideIndex]);
+  resetKeyListeners();
+}
 
 async function importFromDocx(){
+
   let filePath =  await open({
     multiple: false,
     title: "Select Docx File",
@@ -36,7 +66,6 @@ async function importFromDocx(){
   fileName = fileName[fileName.length-1].replace(".docx", ".md");
 
   const newFilePath = await join(await downloadDir(), fileName);
-  console.log(newFilePath);
 
   if (newFilePath == null){
     console.error("Error with join()");
@@ -57,6 +86,7 @@ async function importFromDocx(){
 
   command.on("close", (d)=>{
     console.log(`finished with: ${JSON.stringify(d)}`);
+    openDocument(newFilePath);
   });
 
   command.on("error", (e)=>{
@@ -99,14 +129,7 @@ fileBtn.addEventListener("click", async ()=>{
   });
 
   if (filePath == null) return;
-
-  filePathSpan.innerText = filePath;
-  let request = await invoke("md_parsing", {"filePath": filePath});
-  Slide.setSlideList(request);
-
-  Slide.setSlideIndex(0);
-  Slide.setToCurrentSlide(Slide.slideList[Slide.slideIndex]);
-  resetKeyListeners();
+  openDocument(filePath);
 });
 
 function resetKeyListeners(){

@@ -6,7 +6,7 @@
     - [x] Slide switching
     - [x] slide number
 
-- [~] Making redirect to markdown web editor
+- [x] Making redirect to markdown web editor
 
 - [x] allowing for @... 
     - [x] arguments ('_', no space ('/'), ...)
@@ -14,15 +14,15 @@
 - [~] popup/window system
 - [x] better keybinds handling
 - [x] docx import (pandoc call)
-    - [?] Might be an error if files already exists
-    - [ ] auto-open imported file
+    - [x] auto-open imported file
 
-- [ ] reload file button
-- [ ] open file in default editor
+- [x] reload file button
 - [ ] Adding settings : 
-    - [!] change default markdown web editor
     - [ ] default zoom
     - [ ] change font-familly
+    - [x] bug report
+    - [!] change default markdown web editor
+- [?] open file in default editor
 
 ---
 
@@ -36,6 +36,7 @@
 - Settings
     - [ ] change keybindings
     - [ ] may change slide parsing to "\n***\n" or "\n---\n"
+- [ ] Toasts
 
 ---
 
