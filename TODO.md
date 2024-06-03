@@ -22,7 +22,8 @@
     - [ ] change font-familly
     - [x] bug report
     - [!] change default markdown web editor
-- [?] open file in default editor
+
+- [!] open file in default editor
 
 ---
 
