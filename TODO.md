@@ -23,7 +23,7 @@
     - [x] bug report
     - [!] change default markdown web editor
 
-- [ ] open file in default editor
+- [x] open file in default editor
 
 ---
 

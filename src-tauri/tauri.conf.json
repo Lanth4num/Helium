@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Helium",
-    "version": "0.0.1"
+    "version": "0.8.0"
   },
   "tauri": {
     "allowlist": {
@@ -21,7 +21,7 @@
       },
       "shell": {
         "all": false,
-        "open": true,
+        "open": "((^https:\/\/\\w+).+)|(^(\/)\\w+)|(^([A-Z]:\\\\w+))",
         "sidecar": true,
         "execute": true,
         "scope":[

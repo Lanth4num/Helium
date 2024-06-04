@@ -1,9 +1,9 @@
 [package]
 name = "helium"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
+version = "0.8.0"
+description = "Make your exercise corrections easier !"
+authors = ["B. Adrien"]
+license = "MIT"
 repository = ""
 edition = "2021"
 
