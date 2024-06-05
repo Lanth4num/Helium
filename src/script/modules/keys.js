@@ -1,4 +1,4 @@
-import { nextSlide, previousSlide } from "./slide.js";
+import { nextSlide, previousSlide, slideList } from "./slide.js";
 import { nextSpoiler, previousSpoiler } from "./spoiler.js";
 import { fontUnzoom, fontZoom } from "./utils.js";
 
@@ -8,8 +8,8 @@ let currentKeyEl = document.getElementById("current-keys");
 let keyBindings = {
   "next_spoiler": ["ArrowRight", "PageDown"],
   "previous_spoiler": ["ArrowLeft", "PageUp"],
-  "next_slide": ["n"],
-  "previous_slide": ["p"],
+  "next_slide": ["n", "b"],
+  "previous_slide": ["p", "F5", "Escape"],
   "font_zoom": ["z"],
   "font_unzoom": ["Z"]
 }
@@ -62,8 +62,10 @@ function onPress(e){
     keyMap.push(e.key);
   }
 
-  handle_key_bindings(e);
   show_keys();
+  if (slideList != undefined){
+    handle_key_bindings(e);
+  }
   return;
 }
 

@@ -19,13 +19,6 @@ function reloadFile(){
   openDocument(currentFilePath);
 }
 
-function resetKeyListeners(){
-  document.removeEventListener("keydown", Keys.onPress)
-  document.removeEventListener("keyup", Keys.onRelease)
-  document.addEventListener("keydown", Keys.onPress)
-  document.addEventListener("keyup", Keys.onRelease)
-}
-
 async function importFromDocx(){
 
   let filePath =  await open({
@@ -94,7 +87,6 @@ async function openDocument(filePath){
 
   Slide.setSlideIndex(0);
   Slide.setToCurrentSlide(Slide.slideList[Slide.slideIndex]);
-  resetKeyListeners();
 }
 
 function getWindowHeight(){
