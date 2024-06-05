@@ -21,7 +21,7 @@
       },
       "shell": {
         "all": false,
-        "open": "((^https:\/\/\\w+).+)|(^(\/)\\w+)|(^([A-Z]:\\\\w+))",
+        "open": "((^https:\/\/\\w+).+)|(^(\/\\w+)+(\\.md)$)|(^([A-Z]:(\\\\\\w+)+)(\\.md)$)",
         "sidecar": true,
         "execute": true,
         "scope":[
