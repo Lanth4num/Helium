@@ -10,6 +10,7 @@ function setCurrentSpoilerIndex(value){
 }
 
 function nextSpoiler(){
+  if (spoilers == undefined){console.log("undefined spoilers");return;}
   // check if there is another spoiler
   if ( currentSpoilerIndex < spoilers.length-1 ){ 
     let spoiler = spoilers[currentSpoilerIndex+1]; 
