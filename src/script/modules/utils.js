@@ -10,6 +10,7 @@ import * as Slide from "./slide.js"
 var currentZoom = 30;
 let currentFilePath; 
 
+let overlay = document.getElementById("overlay");
 var filePathSpan = document.getElementById("selectedFile");
 let reloadBtn = document.getElementById("reload");
 
@@ -17,6 +18,13 @@ reloadBtn.addEventListener("click", reloadFile)
 
 function reloadFile(){
   openDocument(currentFilePath);
+}
+
+export function showOverlay(){
+  overlay.style.setProperty("display", "block");
+}
+export function hideOverlay(){
+  overlay.style.setProperty("display", "none");
 }
 
 async function importFromDocx(){

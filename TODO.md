@@ -29,16 +29,17 @@
 
 ### Version 0.9
 
-- [ ] Enable local storage for settings 
-- [ ] Ability to clean files from @ and argts (for printing,...)
 - [ ] multi-keybind support
-- [ ] icons for buttons
-- [ ] pandoc download link and error handling
-- [ ] extended font support
 - Settings
+    - [x] overlay
     - [ ] change keybindings
     - [ ] may change slide parsing to "\n***\n" or "\n---\n"
+- [ ] icons for buttons
 - [ ] Toasts
+- [ ] pandoc download link and error handling
+- [ ] Enable local storage for settings 
+- [ ] Ability to clean files from @ and argts (for printing,...)
+- [ ] extended font support
 
 ---
 
