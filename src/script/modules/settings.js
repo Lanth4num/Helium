@@ -1,5 +1,5 @@
 const { invoke } = window.__TAURI__.tauri;
-import { importFromDocx, fontZoom, currentZoom } from "./utils.js"
+import { importFromDocx, fontZoom, currentZoom, showOverlay, hideOverlay } from "./utils.js"
 
 // Elements
 let reportBtn = document.getElementById("report-bug");
@@ -39,6 +39,7 @@ function saveSettings(){
 
 function openSettings(){
   settingWindow.style.setProperty("visibility", "visible");
+  showOverlay();
 
   // set fontSize input to display current zoom
   fontSizeInput.value = currentZoom;
@@ -54,4 +55,5 @@ editBtn.addEventListener("click", async ()=>{
 
 function closeSettings(){
   settingWindow.style.setProperty("visibility", "hidden");
+  hideOverlay();
 }
