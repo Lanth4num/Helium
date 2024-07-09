@@ -22,6 +22,7 @@
 
 - In your markdown file, just put your text between "@" to make it a spoiler:
 
+
 | Markdown file       | Displayed            | 
 | ------------------- | ---------------------|
 | this is a @ test @  | this is a .......... |
@@ -78,6 +79,7 @@ You can add characters after the first '@' which opens your spoiler such as:
 - **Settings are not saved in-between sessions**
 - You can open your file in dillinger using the "open with web editor" button
 - You can import files from word format using [pandoc](https://pandoc.org/installing.html) if downloaded (you may need to make some changes to markdown file)
+    - it saves the converted markdown folder to the default Download directory
 - You can report bugs using the button, which leads you to the github issue page
 - You can change font-family (more to be added)
 
